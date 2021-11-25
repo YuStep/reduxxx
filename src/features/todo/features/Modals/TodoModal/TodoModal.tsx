@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useRef, SyntheticEvent } from "react";
 import ReactDOM from "react-dom";
-import { JsxTagNameExpression } from "typescript";
-import { useAppSelector, useAppDispatch } from "../../../app/hooks";
-import { modals } from "../constants/modals";
-import { toggleModal } from "./modalSlice";
-
+import { useAppSelector, useAppDispatch } from "../../../../../app/hooks";
+import { modals } from "../../../constants/modals";
+import { toggleModal } from "../../Slices/modalSlice";
+import { FaWindowClose } from "react-icons/fa";
+import { FaPen } from "react-icons/fa";
 import {
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
+  ContentClose,
 } from "./TodoModal.styles";
 type TodoModalProps = {
   postId: string;
@@ -24,9 +25,15 @@ export function TodoModal() {
 
   const modalRef = useRef<HTMLDivElement>(null);
   function handleKey(event: React.KeyboardEvent<HTMLDivElement> | any) {
-    if (event.key == "Escape") {
+    if (event.key === "Escape") {
       dispatch(toggleModal({ openModalId: "", todoId: "" }));
     }
+  }
+
+  function handleEdit() {
+    dispatch(
+      toggleModal({ openModalId: modals.EDIT_MODAL, todoId: existingTodoId })
+    );
   }
   // useEffect(() => {
   //   window.addEventListener("keyup", handleKey);
@@ -59,7 +66,21 @@ export function TodoModal() {
         onKeyDown={handleKey}
         tabIndex={0}
       >
-        <ModalHeader>{existingTodo?.title}</ModalHeader>
+        <ModalHeader>
+          {existingTodo?.title}
+          <FaPen cursor="pointer" onClick={handleEdit} />
+          <ContentClose
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(toggleModal({ openModalId: "", todoId: "" }));
+            }}
+            ref={modalRef}
+            onKeyDown={handleKey}
+            tabIndex={0}
+          >
+            <FaWindowClose color={"red"}></FaWindowClose>
+          </ContentClose>
+        </ModalHeader>
         <ModalBody>{existingTodo?.content}</ModalBody>
       </ModalContent>
     </Modal>,

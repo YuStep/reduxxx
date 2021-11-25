@@ -2,9 +2,15 @@ import {
   TodoItem,
   TodoItemTitle,
   TodoListItemCheck,
-} from "../features/todoListItem.styles";
+} from "../TodoListItem/TodoListItem.styles";
+
+import { FaWindowClose } from "react-icons/fa";
+
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+
+import { deleteTodo } from ".././Slices/todoSlice";
 type TodosListItemType = {
-  id?: string;
+  id: string;
   title: string;
   content?: string;
 
@@ -19,6 +25,11 @@ export function TodosListItem({
   checked,
   onChange,
 }: TodosListItemType) {
+  const dispatch = useAppDispatch();
+
+  function handleClick() {
+    dispatch(deleteTodo(id));
+  }
   return (
     <TodoItem>
       <TodoListItemCheck
@@ -29,6 +40,7 @@ export function TodosListItem({
       <TodoItemTitle isActive={checked} onClick={onChange}>
         {title}
       </TodoItemTitle>
+      {id !== "nocontrols" && <FaWindowClose onClick={handleClick} />}
     </TodoItem>
   );
 }

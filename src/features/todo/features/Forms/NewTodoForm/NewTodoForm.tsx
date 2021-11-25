@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addTodo } from "./todoSlice";
-import { TodoInput } from "./TodoInput";
+import { addTodo } from "../../Slices/todoSlice";
+import { TodoInput } from "../../Components/TodoInput/TodoInput";
 import {
   NewTodoButton,
   NewTodoForm as TodoForm,

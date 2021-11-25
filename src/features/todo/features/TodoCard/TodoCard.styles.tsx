@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import left from "../assets/left.png";
-import right from "../assets/right.png";
-import { divideWord } from "../utils/divideWord";
+import left from "../../assets/left.png";
+import right from "../../assets/right.png";
+import { divideWord } from "../../utils/divideWord";
 type FlapProps = {
   text: string;
   secret: boolean;
@@ -15,6 +15,7 @@ export const Flap = styled.div<FlapProps>`
 
   position: relative;
   &::before {
+    z-index: 3;
     position: absolute;
     ${(props) =>
       props.secret === false
@@ -40,6 +41,7 @@ export const Flap = styled.div<FlapProps>`
     transition: 1s;
   }
   &::after {
+    z-index: 3;
     position: absolute;
     ${(props) =>
       props.secret === false
@@ -95,6 +97,7 @@ export const Content = styled.div`
   position: absolute;
   text-align: justify;
   color: black;
+  z-index: 1;
   font-family: "Merriweather", serif;
   width: 100%;
   height: 100%;
@@ -107,8 +110,11 @@ export const Content = styled.div`
   }
 `;
 
-export const ContentTitle = styled.h1`
-  text-align: center;
+export const ContentClose = styled.div`
+  position: absolute;
+  z-index: 2;
+  right: 10%;
+  top: 5%;
 `;
 
 export const ContentText = styled.h3`

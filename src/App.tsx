@@ -7,7 +7,7 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import { TodosList } from "./features/todo/features/todoList";
+import { TodosList } from "./features/todo/features/TodoList/TodoList";
 function App() {
   return (
     <Router>

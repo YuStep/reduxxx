@@ -10,6 +10,7 @@ export const Modal = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 `;
 
 export const ModalContent = styled.div`
@@ -34,4 +35,17 @@ export const ModalBody = styled.div`
   padding: 10px;
   height: auto;
   word-wrap: break-word;
+`;
+
+export const ModalButton = styled.button`
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin-top: 2px;
+  color: #9394a5;
+  text-align: center;
+  padding: 10px 20px 10px 20px;
 `;

@@ -59,12 +59,17 @@ export const todoSlice = createSlice({
     },
 
     editTodo: (state, action) => {
-      const { id, title, content, completed } = action.payload;
+      const { id, title, content, completed, secret, important } =
+        action.payload;
       const existingPost = state.find((post) => post.id === id);
+
+      console.log(id, existingPost);
       if (existingPost) {
         existingPost.title = title;
         existingPost.content = content;
         existingPost.completed = completed;
+        existingPost.secret = secret;
+        existingPost.important = important;
       }
     },
   },

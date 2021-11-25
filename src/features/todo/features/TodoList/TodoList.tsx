@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { useAppSelector } from "../../../app/hooks";
-import { TodosListItem } from "./todoListItem";
-import { TodoList } from "./todoList.styles";
-import { NewTodoForm } from "./NewTodoForm";
-import { TodoStats } from "./TodoStats";
-import { TodoCard } from "./TodoCard";
-import { TodoModal } from "./TodoModal";
+import { useAppSelector } from "../../../../app/hooks";
+import { TodosListItem } from ".././TodoListItem/TodoListItem";
+import { TodoList } from "./TodoList.styles";
+import { TodoStats } from "../TodoStats/TodoStats";
+import { TodoCard } from "../TodoCard/TodoCard";
+import { TodoModal } from "../Modals/TodoModal/TodoModal";
 import { useDispatch } from "react-redux";
-import { toggleComplete, deleteTodo } from "../features/todoSlice";
-import { NewTodoModal } from "./NewTodoModal";
+import { toggleComplete, deleteTodo } from "../Slices/todoSlice";
+import { NewTodoModal } from "../Modals/NewTodoModal/NewTodoModal";
+import { ConfirmModal } from "../Modals/ConfirmModal/ConfirmModal";
+import { EditTodoModal } from "../Modals/EditTodoModal/EditTodoModal";
 export const TodosList = () => {
   const [filter, setFilter] = useState("All");
   const [view, setView] = useState("list");
@@ -48,7 +48,6 @@ export const TodosList = () => {
   }
   return (
     <>
-      <NewTodoForm />
       <TodoStats state={todos} setFilter={setFilter} toggleView={toggleView} />
 
       <TodoList view={view}>
@@ -56,6 +55,7 @@ export const TodosList = () => {
       </TodoList>
       <TodoModal />
       <NewTodoModal />
+      <EditTodoModal />
     </>
   );
 };

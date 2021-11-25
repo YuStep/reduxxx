@@ -2,13 +2,15 @@ import {
   Card,
   Content,
   ContentText,
-  ContentTitle,
+  ContentClose,
   Flap,
 } from "./TodoCard.styles";
-import { toggleComplete, deleteTodo } from "./todoSlice";
-import { useAppDispatch } from "../../../app/hooks";
-import { toggleModal } from "./modalSlice";
-import { modals } from "../constants/modals";
+import { toggleComplete, deleteTodo } from "../Slices/todoSlice";
+import { useAppDispatch } from "../../../../app/hooks";
+import { toggleModal } from "../Slices/modalSlice";
+import { modals } from "../../constants/modals";
+import { FaWindowClose } from "react-icons/fa";
+
 type TodosListItemType = {
   id: string;
   title: string;
@@ -35,6 +37,14 @@ export function TodoCard({
       }}
     >
       <Content>
+        <ContentClose
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(deleteTodo(id));
+          }}
+        >
+          <FaWindowClose color={"red"}></FaWindowClose>
+        </ContentClose>
         <ContentText>{content.slice(0, 100)}</ContentText>
       </Content>
       <Flap

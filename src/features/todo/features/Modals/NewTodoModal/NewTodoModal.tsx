@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { useAppSelector, useAppDispatch } from "../../../app/hooks";
-import { modals } from "../constants/modals";
-import { toggleModal } from "./modalSlice";
-import { addTodo } from "./todoSlice";
-import { TodoInput } from "./TodoInput";
-import { TodoTextArea } from "./TodoTextArea";
-import { TodosListItem } from "./todoListItem";
+import { useAppSelector, useAppDispatch } from "../../../../../app/hooks";
+import { modals } from "../../../constants/modals";
+import { toggleConfirm, toggleModal } from "../../Slices/modalSlice";
+import { addTodo } from "../../Slices/todoSlice";
+import { TodoInput } from "../../Components/TodoInput/TodoInput";
+import { TodoTextArea } from "../../Components/TodoTextArea/TodoTextArea";
+import { TodosListItem } from "../../TodoListItem/TodoListItem";
+import { FaWindowClose } from "react-icons/fa";
 import {
   Modal,
   ModalBody,
@@ -15,12 +16,14 @@ import {
   ModalInput,
   ModalButton,
   ModalLabel,
+  ContentClose,
 } from "./NewTodoModal.styles";
 import {
   TodoItem,
   TodoItemTitle,
   TodoListItemCheck,
-} from "../features/todoListItem.styles";
+} from "../../TodoListItem/TodoListItem.styles";
+import { ConfirmModal } from "../ConfirmModal/ConfirmModal";
 type TodoModalProps = {
   postId: string;
 };
@@ -31,13 +34,22 @@ export function NewTodoModal() {
   const [completed, setCompleted] = useState(false);
   const [secret, setSecret] = useState(false);
   const [important, setImportant] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
   const openModalId = useAppSelector((state) => state.modal.openModalId);
 
   const dispatch = useAppDispatch();
+
+  const handleConfirm = () => {
+    if (title.length !== 0 && content.length !== 0) {
+      setIsConfirmOpen(true);
+    }
+  };
   const handleAction = () => {
     if (title.length !== 0 && content.length !== 0) {
       dispatch(addTodo(title, content, completed, secret, important));
       dispatch(toggleModal({ openModalId: "", todoId: "" }));
+      setIsConfirmOpen(false);
       setContent("");
       setTitle("");
       setCompleted(false);
@@ -45,9 +57,27 @@ export function NewTodoModal() {
       setImportant(false);
     }
   };
+  const modalRef = useRef<HTMLDivElement>(null);
+  function handleKey(event: React.KeyboardEvent<HTMLDivElement> | any) {
+    if (event.key == "Escape") {
+      dispatch(toggleModal({ openModalId: "", todoId: "" }));
+    }
+  }
+
+  useEffect(() => {
+    if (openModalId === modals.ADD_MODAL) {
+      modalRef?.current?.focus();
+    }
+  }, [openModalId]);
+
   if (openModalId !== modals.ADD_MODAL) {
     return null;
   }
+
+  if (isConfirmOpen) {
+    return <ConfirmModal setConfirm={handleAction} />;
+  }
+
   return ReactDOM.createPortal(
     <Modal
       onClick={() => {
@@ -55,11 +85,25 @@ export function NewTodoModal() {
       }}
     >
       <ModalContent onClick={(e) => e.stopPropagation()}>
-        <ModalHeader>New todo</ModalHeader>
+        <ModalHeader>
+          New todo
+          <ContentClose
+            onClick={(e) => {
+              e.stopPropagation();
+              dispatch(toggleModal({ openModalId: "", todoId: "" }));
+            }}
+            ref={modalRef}
+            onKeyDown={handleKey}
+            tabIndex={0}
+          >
+            <FaWindowClose color={"red"}></FaWindowClose>
+          </ContentClose>
+        </ModalHeader>
 
         <ModalBody>
           <div>
             <TodosListItem
+              id="nocontrols"
               onChange={() => setCompleted((prev) => !prev)}
               checked={completed}
               title="Completed"
@@ -109,7 +153,7 @@ export function NewTodoModal() {
           </div>
         </ModalBody>
 
-        <ModalButton onClick={handleAction}>New Todo</ModalButton>
+        <ModalButton onClick={handleConfirm}>New Todo</ModalButton>
       </ModalContent>
     </Modal>,
     document.body

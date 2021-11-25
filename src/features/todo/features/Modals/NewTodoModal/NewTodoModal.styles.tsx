@@ -49,12 +49,14 @@ export const Modal = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 `;
 
 export const ModalContent = styled.div`
   width: 500px;
   background: #e8ebf3;
   border-radius: 5px;
+  position: relative;
 `;
 
 export const ModalHeader = styled.h2`
@@ -85,4 +87,12 @@ export const ModalButton = styled.button`
   color: #9394a5;
   text-align: center;
   padding: 10px 20px 10px 20px;
+`;
+
+export const ContentClose = styled.div`
+  position: absolute;
+  z-index: 2;
+  right: 4%;
+  top: 4%;
+  cursor: pointer;
 `;

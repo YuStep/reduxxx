@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { TodosListItem } from "./todoListItem";
+import { TodosListItem } from "./TodoListItem";
 
 type TodoItemTitleProps = {
   readonly isActive: boolean;
